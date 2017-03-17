@@ -4,11 +4,8 @@ import (
         "github.com/ant0ine/go-json-rest/rest"
         "log"
         "net/http"
-        "net/smtp"
 	    //"strings"
-	    "bytes"
-	    "strconv"
-        "text/template"
+	    "gopkg.in/gomail.v2"
         "encoding/json"
         "io/ioutil"
 )
@@ -16,10 +13,12 @@ import (
 type Notification struct {
         File_id   string
         Message   string 
+        From 	  string
         Emails 	 []string 
 }
 
 type EmailUser struct {
+	Name 		string
     Username    string
     Password    string
     EmailServer string
@@ -34,63 +33,39 @@ func (f *Notification) SetEmails(Emails []string) {
     f.Emails = Emails
 }
 
-func SendMailService(){
-		emailUser := &EmailUser{"blinkboxunal@gmail.com", "bl1nkb0x", "smtp.gmail.com", 587}
+func SendEmail_Service(notification Notification,user_auth EmailUser, subject string){
+	m := gomail.NewMessage()
+	m.SetAddressHeader("From", user_auth.Username, user_auth.Name)
+    m.SetHeader("To", notification.Emails...)
+    m.SetHeader("Subject", subject)
+    var template = `
+    <html>
+    <h1>Blinkbox</h1>
+    `+notification.From +` shared with you the following message:
+    <br>
+    with the following message <br>
+    <h1>`+notification.Message+`</h1>
+    </html>`
+    m.SetBody("text/html", template)
 
-		auth := smtp.PlainAuth("",
-		    emailUser.Username,
-		    emailUser.Password,
-		    emailUser.EmailServer,
-		)
+    d := gomail.NewPlainDialer(user_auth.EmailServer, user_auth.Port, user_auth.Username, user_auth.Password)
 
-		type SmtpTemplateData struct {
-		    From    string
-		    To      string
-		    Subject string
-		    Body    string
-		}
+    if err := d.DialAndSend(m); err != nil {
+        panic(err)
+    }
 
-		const emailTemplate = `Ola k ase`
-
-		var err error
-		var doc bytes.Buffer
-
-		context := &SmtpTemplateData{
-		    "SmtpEmailSender",
-		    "recipient@domain.com",
-		    "You have been seleted to try the new Blinkboxunal-microservice!",
-		    "Hello, this is a test e-mail body.",
-		}
-		templ := template.New("emailTemplate")
-		templ, err = templ.Parse(emailTemplate)
-		if err != nil {
-		    log.Print("error trying to parse mail template")
-		}
-		err = templ.Execute(&doc, context)
-		if err != nil {
-		    log.Print("error trying to execute mail template")
-		}
-
-		err = smtp.SendMail(emailUser.EmailServer+":"+strconv.Itoa(emailUser.Port), // in our case, "smtp.google.com:587"
-		    auth,
-		    emailUser.Username,
-		    []string{"nrgiraldoc@unal.edu.co","afmesag@unal.edu.co"},
-		    doc.Bytes())
-		if err != nil {
-		    log.Print("ERROR: attempting to send a mail ", err)
-		}
-        
 }
 
-func PostSendNotification(w rest.ResponseWriter, req *rest.Request) {
-		body, err := ioutil.ReadAll(req.Body)
+func PostSendNotificationResource(w rest.ResponseWriter, req *rest.Request) {
 		var t Notification
+		body, err := ioutil.ReadAll(req.Body)
     	err = json.Unmarshal(body, &t)
     	if err != nil {
         	panic(err)
     	}
-		t.SetFileId(req.PathParam("file_id"))
-		SendMailService()
+    	t.SetFileId(req.PathParam("file_id"))
+    	user_auth := EmailUser{"Blinkbox Project","blinkboxunal@gmail.com", "bl1nkb0x","smtp.gmail.com", 587}
+    	SendEmail_Service(t,user_auth,"You have been selected to test blinkbox new feature")
 		w.WriteJson(&t)	
 		
 }
@@ -99,12 +74,12 @@ func main() {
         api := rest.NewApi()
         api.Use(rest.DefaultDevStack...)
         router, err := rest.MakeRouter(
-                rest.Post("/notification/:file_id", PostSendNotification),
+                rest.Post("/notification/:file_id", PostSendNotificationResource),
         )
         if err != nil {
                 log.Fatal(err)
         }
         api.SetApp(router)
-        log.Fatal(http.ListenAndServe(":8080", api.MakeHandler()))
+        log.Fatal(http.ListenAndServe(":4010", api.MakeHandler()))
 }
 
