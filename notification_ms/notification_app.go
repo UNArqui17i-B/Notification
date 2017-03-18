@@ -41,7 +41,9 @@ func SendEmail_Service(notification Notification,user_auth EmailUser, subject st
     var template = `
     <html>
     <h1>Blinkbox</h1>
-    `+notification.From +` shared with you the following message:
+    `+notification.From +` shared with you the following file:
+    <br>
+    http://blinkboxunal.com/file/`+notification.File_id+`
     <br>
     with the following message <br>
     <h1>`+notification.Message+`</h1>
@@ -80,6 +82,6 @@ func main() {
                 log.Fatal(err)
         }
         api.SetApp(router)
-        log.Fatal(http.ListenAndServe(":8080", api.MakeHandler()))
+        log.Fatal(http.ListenAndServe(":4010", api.MakeHandler()))
 }
 
