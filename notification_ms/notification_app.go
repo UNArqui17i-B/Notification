@@ -69,7 +69,7 @@ func PostSendNotificationResource(w rest.ResponseWriter, req *rest.Request) {
     	user_auth := EmailUser{"Blinkbox Project","blinkboxunal@gmail.com", "bl1nkb0x","smtp.gmail.com", 587}
     	SendEmail_Service(t,user_auth,"You have been selected to test blinkbox new feature")
 		w.WriteJson(&t)	
-		
+		w.WriteHeader(http.StatusAccepted)
 }
 
 func main() {
