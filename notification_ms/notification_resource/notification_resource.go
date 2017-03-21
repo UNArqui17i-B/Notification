@@ -18,7 +18,7 @@ func PostSendNotificationResource(w rest.ResponseWriter, req *rest.Request) {
     	}
     	t.SetFileId(req.PathParam("file_id"))
     	user_auth := notification_model.EmailUser{"Blinkbox Project","blinkboxunal@gmail.com", "bl1nkb0x","smtp.gmail.com", 587}
-    	notification_service.SendEmail_Service(t,&user_auth,"You have been selected to test blinkbox new feature")
+    	notification_service.SendEmail_Service(t,&user_auth,t.From + "shared a document with you")
 		w.WriteJson(&t)	
 		w.WriteHeader(http.StatusAccepted)
 }
