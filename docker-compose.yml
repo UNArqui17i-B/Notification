@@ -1,4 +1,4 @@
 notification-ms:
-  build: ./src/notification_ms
+  build: ./notification_ms
   ports:
     - "4010:4010"
