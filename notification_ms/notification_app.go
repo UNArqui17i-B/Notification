@@ -4,7 +4,7 @@ import (
         "github.com/ant0ine/go-json-rest/rest"
         "log"
         "net/http"
-        "notification_ms/notification_resource"
+        "app/notification_resource"
 )
 
 func main() {

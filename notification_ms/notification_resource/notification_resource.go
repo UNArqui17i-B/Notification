@@ -3,8 +3,8 @@ package notification_resource
 import (
         "github.com/ant0ine/go-json-rest/rest"
         "net/http"
-        "notification_ms/notification_model"
-        "notification_ms/notification_service"
+        "app/notification_model"
+        "app/notification_service"
         "io/ioutil"
         "encoding/json"
 )

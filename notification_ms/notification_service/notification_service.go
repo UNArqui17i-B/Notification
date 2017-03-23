@@ -2,7 +2,7 @@ package notification_service
 
 import (
 	    "gopkg.in/gomail.v2"
-        "notification_ms/notification_model"
+        "app/notification_model"
 )
 
 func SendEmail_Service(notification *notification_model.Notification,user_auth *notification_model.EmailUser, subject string){
