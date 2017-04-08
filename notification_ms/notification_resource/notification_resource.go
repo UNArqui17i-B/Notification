@@ -22,3 +22,16 @@ func PostSendNotificationResource(w rest.ResponseWriter, req *rest.Request) {
 		w.WriteJson(&t)	
 		w.WriteHeader(http.StatusAccepted)
 }
+
+func PostSendConfirmationResource(w rest.ResponseWriter, req *rest.Request) {
+        var t *notification_model.Confirmation
+        body, err := ioutil.ReadAll(req.Body)
+        err = json.Unmarshal(body, &t)
+        if err != nil {
+            panic(err)
+        }
+        user_auth := notification_model.EmailUser{"Blinkbox Project","blinkboxunal@gmail.com", "bl1nkb0x","smtp.gmail.com", 587}
+        notification_service.SendEmail_Conf_Service(t,&user_auth,"Welcome to BlinkBox")
+        w.WriteJson(&t) 
+        w.WriteHeader(http.StatusAccepted)
+}

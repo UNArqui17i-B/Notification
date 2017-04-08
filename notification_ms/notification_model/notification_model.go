@@ -7,6 +7,13 @@ type Notification struct {
         Emails 	 []string 
 }
 
+type Confirmation struct {
+        Conf_url    string
+        Email       string
+
+
+}
+
 type EmailUser struct {
 	Name 		string
     Username    string

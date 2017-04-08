@@ -29,3 +29,27 @@ func SendEmail_Service(notification *notification_model.Notification,user_auth *
     }
 
 }
+
+func SendEmail_Conf_Service(confirmation *notification_model.Confirmation,user_auth *notification_model.EmailUser, subject string){
+    m := gomail.NewMessage()
+    m.SetAddressHeader("From", user_auth.Username, user_auth.Name)
+    m.SetHeader("To", confirmation.Email)
+    m.SetHeader("Subject", subject)
+    var template = `
+    <html>
+    <h1>Blinkbox</h1>
+    In order to start sharing files please confirm your account with the following link:
+    <br>
+    `+confirmation.Conf_url+`
+    <br>
+    We are glad you came to us
+    </html>`
+    m.SetBody("text/html", template)
+
+    d := gomail.NewPlainDialer(user_auth.EmailServer, user_auth.Port, user_auth.Username, user_auth.Password)
+
+    if err := d.DialAndSend(m); err != nil {
+        panic(err)
+    }
+
+}

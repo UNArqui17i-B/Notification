@@ -12,6 +12,7 @@ func main() {
         api.Use(rest.DefaultDevStack...)
         router, err := rest.MakeRouter(
                 rest.Post("/notification/:file_id", notification_resource.PostSendNotificationResource),
+                rest.Post("/confirmation",notification_resource.PostSendConfirmationResource),
         )
         if err != nil {
                 log.Fatal(err)
