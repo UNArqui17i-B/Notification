@@ -3,10 +3,11 @@ title: Notification API
 baseUri: http://localhost:4010
 mediaType: application/json
 
-/notification/{fileId}:
-    post:
-        description: Send bulk of emails
+/notification:
+    /messages/{fileId}:
+        post:
+            description: Send bulk of emails
 
-/confirmation:
-    post:
-        description: Send confirmation email
+    /confirmation:
+        post:
+            description: Send confirmation email
