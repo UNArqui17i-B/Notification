@@ -2,3 +2,9 @@ notification-ms:
   build: ./notification_ms
   ports:
     - "4010:4010"
+  environment:
+      NAME: "Blinkbox Project"
+      USERNAME: "blinkboxunal@gmail.com"
+      PASSWORD: "bl1nkb0x"
+      EMAIL_SERVER: "smtp.gmail.com"
+      PORT: 587

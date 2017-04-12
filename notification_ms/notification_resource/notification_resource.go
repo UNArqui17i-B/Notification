@@ -7,6 +7,8 @@ import (
         "app/notification_service"
         "io/ioutil"
         "encoding/json"
+        "os"
+        "strconv"
 )
 
 func PostSendNotificationResource(w rest.ResponseWriter, req *rest.Request) {
@@ -17,8 +19,12 @@ func PostSendNotificationResource(w rest.ResponseWriter, req *rest.Request) {
         	panic(err)
     	}
     	t.SetFileId(req.PathParam("file_id"))
-    	user_auth := notification_model.EmailUser{"Blinkbox Project","blinkboxunal@gmail.com", "bl1nkb0x","smtp.gmail.com", 587}
-    	notification_service.SendEmail_Service(t,&user_auth,t.From + "shared a document with you")
+    	port, err := strconv.Atoi(os.Getenv("PORT"))
+        if err != nil {
+            panic(err)
+        }
+        user_auth := notification_model.EmailUser{os.Getenv("NAME"),os.Getenv("USERNAME"), os.Getenv("PASSWORD"),os.Getenv("EMAIL_SERVER"), port}
+        notification_service.SendEmail_Service(t,&user_auth,t.From + "shared a document with you")
 		w.WriteJson(&t)	
 		w.WriteHeader(http.StatusAccepted)
 }
@@ -30,7 +36,11 @@ func PostSendConfirmationResource(w rest.ResponseWriter, req *rest.Request) {
         if err != nil {
             panic(err)
         }
-        user_auth := notification_model.EmailUser{"Blinkbox Project","blinkboxunal@gmail.com", "bl1nkb0x","smtp.gmail.com", 587}
+        port, err := strconv.Atoi(os.Getenv("PORT"))
+        if err != nil {
+            panic(err)
+        }
+        user_auth := notification_model.EmailUser{os.Getenv("NAME"),os.Getenv("USERNAME"), os.Getenv("PASSWORD"),os.Getenv("EMAIL_SERVER"), port}
         notification_service.SendEmail_Conf_Service(t,&user_auth,"Welcome to BlinkBox")
         w.WriteJson(&t) 
         w.WriteHeader(http.StatusAccepted)
