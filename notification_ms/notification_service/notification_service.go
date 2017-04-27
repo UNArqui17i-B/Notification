@@ -13,11 +13,11 @@ func SendEmail_Service(notification *notification_model.Notification,user_auth *
     var template = `
     <html>
     <h1>Blinkbox</h1>
-    `+notification.From +` shared with you the following file:
+    `+notification.From +` compartio contigo el siguiente archivo:
     <br>
     http://blinkboxunal.com/file/`+notification.File_id+`
     <br>
-    with the following message <br>
+    con el siguiente mensaje <br>
     <h1>`+notification.Message+`</h1>
     </html>`
     m.SetBody("text/html", template)
@@ -38,11 +38,11 @@ func SendEmail_Conf_Service(confirmation *notification_model.Confirmation,user_a
     var template = `
     <html>
     <h1>Blinkbox</h1>
-    In order to start sharing files please confirm your account with the following link:
+    Para empezar a compartir tus archivos por favor confirma tu cuenta con el siguiente link:
     <br>
     `+confirmation.Conf_url+`
     <br>
-    We are glad you came to us
+    Estamos muy felices de tenerte entre nosotros
     </html>`
     m.SetBody("text/html", template)
 

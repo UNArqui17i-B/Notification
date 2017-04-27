@@ -24,7 +24,7 @@ func PostSendNotificationResource(w rest.ResponseWriter, req *rest.Request) {
             panic(err)
         }
         user_auth := notification_model.EmailUser{os.Getenv("NAME"),os.Getenv("USERNAME"), os.Getenv("PASSWORD"),os.Getenv("EMAIL_SERVER"), port}
-        notification_service.SendEmail_Service(t,&user_auth,t.From + "shared a document with you")
+        notification_service.SendEmail_Service(t,&user_auth,t.From + " compartio un documento contigo")
 		w.WriteJson(&t)	
 		w.WriteHeader(http.StatusAccepted)
 }
@@ -41,7 +41,7 @@ func PostSendConfirmationResource(w rest.ResponseWriter, req *rest.Request) {
             panic(err)
         }
         user_auth := notification_model.EmailUser{os.Getenv("NAME"),os.Getenv("USERNAME"), os.Getenv("PASSWORD"),os.Getenv("EMAIL_SERVER"), port}
-        notification_service.SendEmail_Conf_Service(t,&user_auth,"Welcome to BlinkBox")
+        notification_service.SendEmail_Conf_Service(t,&user_auth,"Bienvenido a BlinkBox")
         w.WriteJson(&t) 
         w.WriteHeader(http.StatusAccepted)
 }
