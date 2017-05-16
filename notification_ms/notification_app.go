@@ -13,6 +13,7 @@ func main() {
         router, err := rest.MakeRouter(
                 rest.Post("/notification/messages/:file_id", notification_resource.PostSendNotificationResource),
                 rest.Post("/notification/confirmation",notification_resource.PostSendConfirmationResource),
+                rest.Post("/notification/recover",notification_resource.PostSendRecoverResource),
         )
         if err != nil {
                 log.Fatal(err)

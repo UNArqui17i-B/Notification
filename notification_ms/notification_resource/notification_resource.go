@@ -45,3 +45,20 @@ func PostSendConfirmationResource(w rest.ResponseWriter, req *rest.Request) {
         w.WriteJson(&t) 
         w.WriteHeader(http.StatusAccepted)
 }
+
+func PostSendRecoverResource(w rest.ResponseWriter, req *rest.Request){
+    var t *notification_model.Recover
+    body, err := ioutil.ReadAll(req.Body)
+    err = json.Unmarshal(body, &t)
+    if err != nil {
+        panic(err)
+    }
+    port, err := strconv.Atoi(os.Getenv("PORT"))
+    if err != nil {
+        panic(err)
+    }
+    user_auth := notification_model.EmailUser{os.Getenv("NAME"),os.Getenv("USERNAME"), os.Getenv("PASSWORD"),os.Getenv("EMAIL_SERVER"), port}
+    notification_service.SendEmail_Recover_Service(t,&user_auth,"Recupera tu cuenta BlinkBox")
+    w.WriteJson(&t) 
+    w.WriteHeader(http.StatusAccepted)
+}
