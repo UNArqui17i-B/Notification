@@ -20,6 +20,6 @@ func main() {
                 log.Fatal(err)
         }
         api.SetApp(router)
-        log.Fatal(http.ListenAndServe(os.Getenv("HOST_PORT"), api.MakeHandler()))
+        log.Fatal(http.ListenAndServe(":"+os.Getenv("HOST_PORT"), api.MakeHandler()))
 }
 
