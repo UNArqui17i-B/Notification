@@ -8,3 +8,4 @@ notification-ms:
       PASSWORD: "bl1nkb0x"
       EMAIL_SERVER: "smtp.gmail.com"
       PORT: 587
+      HOST_PORT: 4010

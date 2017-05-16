@@ -5,6 +5,7 @@ import (
         "log"
         "net/http"
         "app/notification_resource"
+        "os"
 )
 
 func main() {
@@ -19,6 +20,6 @@ func main() {
                 log.Fatal(err)
         }
         api.SetApp(router)
-        log.Fatal(http.ListenAndServe(":4010", api.MakeHandler()))
+        log.Fatal(http.ListenAndServe(":"+os.Getenv("HOST_PORT"), api.MakeHandler()))
 }
 
