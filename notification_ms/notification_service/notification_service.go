@@ -53,3 +53,27 @@ func SendEmail_Conf_Service(confirmation *notification_model.Confirmation,user_a
     }
 
 }
+
+func SendEmail_Recover_Service(recover *notification_model.Recover,user_auth *notification_model.EmailUser, subject string){
+    m := gomail.NewMessage()
+    m.SetAddressHeader("From", user_auth.Username, user_auth.Name)
+    m.SetHeader("To", recover.Email)
+    m.SetHeader("Subject", subject)
+    var template = `
+    <html>
+    <h1>Blinkbox</h1>
+    Hola `+recover.User+` para recuperar tu cuenta por favor entra al siguiente link:
+    <br>
+    `+recover.Recover_url+`
+    <br>
+    Estamos muy felices de tenerte entre nosotros
+    </html>`
+    m.SetBody("text/html", template)
+
+    d := gomail.NewPlainDialer(user_auth.EmailServer, user_auth.Port, user_auth.Username, user_auth.Password)
+
+    if err := d.DialAndSend(m); err != nil {
+        panic(err)
+    }
+
+}

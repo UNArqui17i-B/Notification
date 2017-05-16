@@ -14,6 +14,13 @@ type Confirmation struct {
 
 }
 
+type Recover struct{
+    Recover_url     string
+    User            string
+    Email           string
+
+}
+
 type EmailUser struct {
 	Name 		string
     Username    string
